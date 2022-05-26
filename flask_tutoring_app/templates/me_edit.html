@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Edytuj konto</title>
+    <meta charset="UTF-8">
+    <link href="../static/css/home.css" rel="stylesheet"/>
+    <meta content="width=device-width, user-scalable=no,
+	initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+    <link href="../static/fonts/css/fontello.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    {% include "header.html" %}
+<div>
+    <div id="wrapper">
+
+        <div id="user_edit_form">
+            <h2>Edutyj dane</h2>
+            <form action="/me/edit" method="POST">
+                <div>
+                    <p>Imie i nazwisko</p>
+                    <input id="full_name" max="35" min="6" name="full_name" pattern="^[A-Za-z0-9_\ ]+$" required
+                           value="{{ me.full_name }}"/>
+                    <p class="hidden">--</p>
+                </div>
+                <div>
+                    <p>Numer telefonu</p>
+                    <input id="phone" name="phone" pattern="^[0-9]{9}$" required value="{{ me.phone }}">
+                    <p class="hidden">--</p>
+                </div>
+                <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+                <input type=submit value=Edyutj>
+                <p class="hidden">--</p>
+            </form>
+        </div>
+
+        <div id="upload">
+            <h2>Zmień zdjęcie</h2>
+            <form action="/upload" enctype=multipart/form-data method=post>
+                <input name=file type=file>
+                <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+                <input type=submit value=Upload>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% include "footer.html" %}
+</body>

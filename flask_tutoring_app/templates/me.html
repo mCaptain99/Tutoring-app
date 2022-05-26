@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="../static/css/home.css" rel="stylesheet"/>
+    <meta content="width=device-width, user-scalable=no,
+	initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+    <link href="../static/fonts/css/fontello.css" rel="stylesheet" type="text/css"/>
+    <title>Title</title>
+</head>
+<body>
+
+{% include "header.html" %}
+<div id="wrapper">
+    <div id="my_data">
+        <h2>{{ user.username }}</h2>
+        {% if user.photo_url %} <img height="200px" src="../static/photos/{{ user.username }}.{{ user.photo_url }}"
+                                     width="200px"/>
+        {% else %} <img height="200px" src="../static/photos/default.jpg" width="200px"/>
+        {% endif %}
+        <h2>Imię i Nazwisko: {{ user.full_name }}</h2>
+        <h2>Email: {{ user.email }}</h2>
+        <h2>Telefon: {{ user.phone }}</h2>
+
+        <h2><a href="/me/edit"> Edytuj Twoje dane </a></h2>
+    </div>
+
+
+    <div id="my_activity">
+        <button id="btn_toggle" onclick="toggle()">Moje opinie</button>
+        <div id="my_ads">
+            <h1>Twoje ogłoszenia</h1>
+            {% for ad in ads %}
+
+            <h2>
+                <a href="ads/{{ ad.uuid }}">
+                    {{ ad.author.full_name }} - {{ ad.title }} Cena: {{ ad.price }}
+                </a>
+            </h2>
+            <form action="ads/{{ ad.uuid }}/delete" method="post">
+                <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+                <p><input class="link_like" type="submit" value="Usuń"></p>
+            </form>
+            <a href="/ads/{{ ad.uuid }}/edit">Edytuj</a>
+            <p class="date">
+                Opublikowany {{ ad.creation_date }}
+            </p>
+            <p>
+            {{ ad.body[:200] }}
+            </p>
+            {% endfor %}
+
+        </div>
+
+        <div id="my_reviews" style="display: none;">
+            <h1>Twoje opinie</h1>
+            {% for review in reviews %}
+            <h3>Utworzony przez {{ review.author.full_name }}</h3>
+            <h4>Ocena : {{ review.rate }} </h4>
+            <a href="/ads/{{ review.ad.uuid }}">{{ review.ad.title }}</a>
+            <p>{{ review.body[:200] }}</p>
+            <p>{{ review.creation_date }}</p>
+            <form action="/reviews/{{ review.uuid }}/delete" method="post">
+                <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+                <p><input class="link_like" type=submit value="Usuń"></p>
+            </form>
+            {% endfor %}
+            {% for response in responses %}
+            <h3>Utworzony przez {{ response.author.full_name }}</h3>
+            <a href="/ads/{{ response.review.ad.uuid }}">{{ response.review.ad.title }}</a>
+            <p>{{ response.body[:200] }}</p>
+            <button class="link_like" onclick="delete_response({{ response.uuid }}, {{ csrf_token() }})">Usuń</button>
+            {% endfor %}
+
+        </div>
+    </div>
+    <script src="../static/js/me.js"></script>
+</div>
+{% include "footer.html" %}
+</body>
+</html>

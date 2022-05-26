@@ -1,0 +1,16 @@
+<div class="pagination">
+            {% if pagination.far_from_beginning %}
+            <button onclick="refreshPage(1)"> 1 ...</button>
+            {% endif %}
+            {% if pagination.has_previous %}
+            <button onclick="refreshPage({{ pagination.previous }})">poprzednia</button>
+            {% endif %}
+            {% if pagination.has_previous or pagination.has_next %}<span
+                style="font-size: 20px;">{{ pagination.page }}</span> {% endif %}
+            {% if pagination.has_next %}
+            <button onclick="refreshPage({{ pagination.next }})">nastepna</button>
+            {% endif %}
+            {% if pagination.far_from_end %}
+            <button onclick="refreshPage({{ pagination.last_page }})">... {{ pagination.last_page }}</button>
+            {% endif %}
+        </div>

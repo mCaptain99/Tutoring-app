@@ -1,0 +1,80 @@
+<html lang='pl'>
+<head>
+    <title>Zarejestruj</title>
+    <meta content="width=device-width, user-scalable=no,
+	initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <link href="../static/css/home.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+    <link href="../static/fonts/css/fontello.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+{% include 'header.html' %}
+<div id="wrapper">
+    <div id="register_form">
+        <form action="/register" method="POST">
+            <h1>Zarejestruj sie</h1>
+            <div class="autocomplete" style="width: 400px;">
+                <p>Nazwa Użytkownika</p>
+                <input id="username_input" max="35" min="6" name="username" pattern="^[A-Za-z0-9_]+$" required
+                       type="text"/>
+                <p class="hidden">--</p>
+            </div>
+            <div class="autocomplete" style="width: 400px;">
+                <p>Hasło</p>
+                <input id="password_input" max="35" min="6" name="password" required type="password"/>
+                <p class="hidden">--</p>
+            </div>
+            <div class="autocomplete" style="width: 400px;">
+                <p>Potwierdź Hasło</p>
+                <input id="confirm_input" max="35" min="6" name="confirm" required type="password"/>
+                <p class="hidden" id="confirm_error">Hasła muszą być takie same</p>
+            </div>
+            <div class="autocomplete" style="width: 400px;">
+                <p>Email</p>
+                <input id="email_input" max="35" min="6" name="email" required type="text"/>
+                <p class="hidden">--</p>
+            </div>
+            <div class="autocomplete" style="width: 400px;">
+                <p>Numer telefonu</p>
+                <input id="phone_input" name="phone" pattern="^[0-9]{9}$" required type="text"/>
+                <p class="hidden">--</p>
+            </div>
+            <div class="autocomplete" style="width: 400px;">
+                <p>Imię i nazwisko</p>
+                <input id="fullname_input" max="35" min="6" name="fullname" pattern="[A-Za-z\ \-]+" required
+                       type="text"/>
+                <p class="hidden">--</p>
+            </div>
+            {{ form.recaptcha }}
+            {{ form.csrf_token }}
+            <input type="submit" value="Dodaj">
+        </form>
+    </div>
+    <script>
+  $('#confirm_input').on('blur', () => {
+    if ($('#confirm_input').val() != $('#password_input').val()){
+        $('#confirm_error').css('visibility', 'visible');
+        let form = document.querySelector("form");
+        form.onsubmit = function() {
+          return false;
+        }
+    }
+    else{
+        $('#confirm_error').css('visibility', 'hidden');
+        let form = document.querySelector("form");
+        form.onsubmit = function() {
+          return true;
+        }
+    }
+  });
+
+    </script>
+</div>
+{% include "footer.html" %}
+</body>
+</html>

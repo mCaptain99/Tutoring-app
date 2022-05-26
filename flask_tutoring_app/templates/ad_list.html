@@ -1,0 +1,125 @@
+<html lang='pl'>
+<head>
+    <title>Szukaj ogłoszeń</title>
+    <meta content="width=device-width, user-scalable=no,
+	initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <link href="../../static/css/home.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+    <link href="../../static/fonts/css/fontello.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<script src="{{ url_for('static',filename='js/render_evaluation.js') }}"></script>
+{% include "header.html" %}
+<div id="wrapper">
+    <!-- TODO ADD VALIDATION TO FORM -->
+    <div id="search_form">
+        <form action="/ads/search" autocomplete="off" id="form" method="GET">
+            <h1>Szukaj ogłoszenia</h1>
+            <div class="autocomplete">
+                <p>Tytuł</p>
+                <input id="search_title" name="title" type="text" value="{{ request.args.get('title', '') }}"/>
+                <p class="hidden">--</p>
+            </div>
+            <div class="autocomplete">
+                <p>Autor</p>
+                <input id="search_author" name="author" type="text" value="{{ request.args.get('author', '') }}"/>
+                <p class="hidden">--</p>
+            </div>
+            <div class="autocomplete">
+                <p>Miasto</p>
+                <input id="search_city" name="city" placeholder="Miasto" type="text"
+                       value="{{ request.args.get('city', '') }}">
+                <p class="hidden" id="search_city_error">Wybierz wartość z listy!</p>
+            </div>
+            <div class="autocomplete">
+                <p>W promieniu</p>
+                <input id="search_radius" name="radius" placeholder="W promieniu" type="number"
+                       value="{{ request.args.get('radius', '') }}">
+                <p class="hidden">--</p>
+            </div>
+            <div class="autocomplete">
+                <p>Kategoria</p>
+                <input id="search_category" name="category" type="text" value="{{ request.args.get('category', '') }}"/>
+                <p class="hidden" id="search_category_error">Wybierz wartość z listy!</p>
+            </div>
+            v
+            <div class="autocomplete">
+                <p>Cena maksymalna</p>
+                <input id="search_price" name="price" type="number" value="{{ request.args.get('price') }}"/>
+                <p class="hidden">--</p>
+            </div>
+            <div>
+                <p>Forma Zajęć</p>
+                {% if request.args.get('online') %}
+                <input checked id="online" name="online" type="checkbox" value="True">
+                <label for="online">Online</label>
+                {% else %}
+                <input id="online" name="online" type="checkbox" value="True">
+                <label for="online">Online</label>
+                {% endif %}
+                {% if request.args.get('stationary') %}
+                <input checked id="stationary" name="stationary" type="checkbox" value="True">
+                <label for="stationary">Stacjonarnie</label>
+                {% else %}
+                <input id="stationary" name="stationary" type="checkbox" value="True">
+                <label for="stationary">Stacjonarnie</label>
+                {% endif %}
+
+            </div>
+            <div>
+                <p>Sortowanie wzgędem: </p>
+                {{ form.sort }} <br><br>
+            </div>
+            <input type="submit" value="Szukaj">
+
+        </form>
+    </div>
+    <div id="results">
+
+        {% for ad in ads %}
+
+        <div class="ad">
+            <div class="photo_div">
+                {% if ad.author.photo_url %} <img
+                    height="100px" src="../static/photos/{{ ad.author.username }}.{{ ad.author.photo_url }}"
+                    width="100px"/>
+                {% else %} <img height="100px" src="../static/photos/default.jpg" width="100px"/>
+                {% endif %}
+            </div>
+
+            <div class="ad_data">
+                <a href="/ads/{{ ad.uuid }}">
+                    {{ ad.author.full_name }} - {{ ad.title }} </a> Cena: {{ ad.price }}zł  </h2>
+                <h3 id="evaluation_{{ad.uuid}}">
+                    <script>render_evaluation('evaluation_{{ ad.uuid }}', '{{ ad.evaluation }}');</script>
+                    z {{ ad.review_number }} ocen </h3>
+                <p class="date">
+                    Opublikowany {{ ad.creation_date }}
+                </p>
+                <p><i class="fas fa-map-marker-alt"></i> {{ ad.city.name }}</p>
+         <p>{% if ad.online %}<i class="fas fa-globe-americas"></i> Online {% endif %}
+             {% if ad.stationary %}<i class="fas fa-home"></i>  Stacjonarnie {% endif %} </p>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+        {% endfor %}
+        {% include 'pagination.html' %}
+    </div>
+</div>
+{% include "footer.html" %}
+<script src="{{ url_for('static',filename='js/cities.js') }}"></script>
+<script src="{{ url_for('static',filename='js/categories.js') }}"></script>
+<script src="{{ url_for('static',filename='js/autocomplete.js') }}"></script>
+<script src="{{ url_for('static',filename='js/pagination.js') }}"></script>
+<script>
+  console.log(cities); autocomplete(document.getElementById("search_city"), cities, document.getElementById("search_city_error"));
+  console.log(categories); autocomplete(document.getElementById("search_category"), categories, document.getElementById("search_category_error"));
+
+</script>
+</body>
+</html>

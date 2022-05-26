@@ -1,0 +1,313 @@
+a{
+    text-decoration: none;
+    color: #114084;
+}
+
+nav a{
+    color: white;
+}
+
+body{
+    background-color: #f1f1f1;
+    color: #1c1c1c;
+    font-family: 'Quicksand', sans-serif;
+}
+
+nav{
+    background-color: #1c1c1c;
+    color: #f1f1f1;
+	top: 0;
+	padding: 5%;
+}
+
+nav a{
+    color: f1f1f1;
+}
+
+.flashes{
+    list-style-type: none;
+    background: #b2b7dc;
+    padding: 1%;
+    color: black;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+input, textarea{
+    background-color: #f1f1f1;
+}
+
+button, input[type=submit]{
+    background-color: #b2b7dc;
+    padding: 10px;
+    border: none;
+}
+
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+input, select, textarea {
+  border: 3px solid #b2b7dc;
+  padding: 10px;
+  font-size: 16px;
+  width: 80%;
+}
+
+input[type=submit] {
+  color: 1c1c1c;
+  width: auto;
+}
+
+input[type=submit]:hover {
+    cursor: pointer;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #acacac;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.autocomplete-items div:hover {
+  background-color: #b2b7dc;
+}
+
+.autocomplete-active {
+  background-color: DodgerBlue !important;
+  color: #ffffff;
+}
+
+input[type=checkbox]{
+    margin: 0;
+    padding: 0;
+    margin-left: 5px;
+    margin-bottom: 7px;
+    width: 25px;
+}
+
+nav h3{
+	display: inline-block;
+	font-size: 28px;
+	padding: 0;
+	margin: 0;
+}
+
+nav ul{
+	clear: both;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	margin-top: 5%;
+	text-decoration: none;
+	display: none;
+}
+
+nav ul li{
+	text-align: center;
+	border-bottom: 1px dotted #eee;
+}
+
+
+nav li a {
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+nav li a:hover {
+  background-color: #3466aa;
+  color: f1f1f1;
+}
+
+#menu-button{
+	float: right;
+	margin: 2%;
+	text-decoration: none;
+	color: white;
+	font-size: 28px;
+}
+
+#search_form, #ad_details, #my_data{
+    text-align: center;
+}
+
+#login_form, #register_form, #ad_form, #ad_edit_form, #user_edit_form, #upload{
+        text-align: center;
+}
+
+#login_form form, #ad_form form, #register_form, #ad_edit_form form, #user_edit_form form, #upload form{
+    margin: auto;
+}
+
+
+#ad_details img{
+    width: 50%;
+}
+
+
+@media screen and  (min-width: 768px) {
+
+    #wrapper{
+        overflow: auto;
+    }
+
+    #search_form, #ad_details, #my_data{
+        float: left;
+        width: 30%;
+        margin-right: 4%;
+        padding-right: 1%;
+    }
+
+    #results, #reviews, #my_activity{
+        position: absulute;
+        width: 61%;
+        margin-right: 4%;
+        overflow: auto;
+    }
+
+    #user_data{
+        float: left;
+        width: 45%;
+        height: inherit;
+
+    }
+
+    #ad_data{
+        float: left;
+        width: 45%;
+        text-align: left;
+    }
+
+    #ad_details{
+        width: 40%;
+    }
+    #reviews{
+        width: 51%;
+    }
+
+    .footer{
+        margin-top: 5%;
+        position: relative;
+    }
+
+    #login_form, #register_form, #ad_form, #ad_edit_form, #user_edit_form, #upload{
+        margin-top: 4%;
+        width: 100%;
+    }
+
+    #login_form form, #ad_form form, #register_form, #ad_edit_form form, #user_edit_form form, #upload form{
+        width: 60%;
+    }
+
+    nav{
+		padding: 1% 2% 1% 2%;
+		width: 96%;
+	}
+
+    nav ul{
+		overflow: hidden;
+		display: inline-block;
+		margin-top: 0;
+		margin-left: 4%;
+	}
+
+    #menu-button{
+		display: none;
+	}
+
+    nav li {
+      float: left;
+    }
+}
+
+
+ #register_form forms{
+    width: 100%;
+ }
+
+.hidden{
+    visibility: hidden;
+    margin: 2px;
+}
+
+.g-recaptcha{
+    text-align: center;
+}
+
+.g-recaptcha div{
+    margin: auto;
+    margin-bottom: 2%;
+}
+
+.photo_div{
+    float: left;
+    margin: 3%;
+}
+
+.ad_data{
+    margin: 2%;
+}
+
+.link_like{
+    background: none;
+    color: #114084;
+    border: none;
+    text-decoration: underline;
+    background-color: #f1f1f1;
+}
+
+input[type=submit].link_like{
+    background-color: #f1f1f1;
+    font-size: 14px;
+    height: 15px;
+    padding: 0;
+}
+
+.link_like:hover, button:hover{
+    cursor: pointer;
+}
+
+#add_response_form{
+    width: 50%;
+    text-align: left;
+    margin-top: 2%;
+}
+
+#add_response_form .g-recaptcha div{
+    margin: 0;
+}
+
+p, a{
+    font-weight: 600;
+}
+
+.footer {
+    background-color: #1c1c1c;
+    color: #646464;
+    text-align: center;
+    padding: 3%;
+}
+
+.text{
+    text-align: justify;
+    padding: 3%;
+}
+
+textarea{
+    height: 100px;
+}

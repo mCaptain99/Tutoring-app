@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no,
+	initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <link href="../static/css/home.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+    <link href="../static/fonts/css/fontello.css" rel="stylesheet" type="text/css"/>
+    <title>Ogłoszenie</title>
+</head>
+<body>
+
+
+{% include "header.html" %}
+
+<script src="{{ url_for('static',filename='js/render_evaluation.js') }}"></script>
+<div id="wrapper">
+    <div id="ad_details">
+        {% if current_user.get_id() == ad.user_id %}
+        <form action="/ads/{{ ad.uuid }}/delete" method="post">
+            <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+            <p><input class="link_like" type=submit value="Usuń"></p>
+        </form>
+        <a href="/ads/{{ ad.uuid }}/edit">Edytuj ogloszenie</a>
+        {% endif %}
+
+        <h1>{{ ad.title }}</h1>
+        <div id="user_data">
+        <h2>{{ ad.author.full_name }}</h2>
+        {% if ad.author.photo_url %} <img src="../static/photos/{{ ad.author.username }}.{{ ad.author.photo_url }}"/>
+        {% else %} <img src="../static/photos/default.jpg"/>
+        {% endif %}
+        <p><i class="fas fa-envelope" style="color: #114084;"></i>  {{ ad.author.email }} </p>
+        <p><i class="fas fa-mobile-alt" style="color: #114084;"></i> {{ ad.author.phone }} </p>
+        </div>
+        <div id="ad_data">
+        <h2>Cena: {{ ad.price }}</h2>
+                        <h3 id="evaluation_{{ad.uuid}}">
+                    <script>render_evaluation('evaluation_{{ ad.uuid }}', '{{ ad.evaluation }}');</script>
+                    z {{ ad.review_number }} ocen </h3>
+        <p>{{ ad.creation_date }}</p>
+        <p>{% if ad.online %}<i class="fas fa-globe-americas"></i> Online {% endif %}
+             {% if ad.stationary %}<i class="fas fa-home"></i>  Stacjonarnie {% endif %} </p>
+        <p><i class="fas fa-map-marker-alt"></i> {{ ad.city.name }}</p>
+        <p>Kategoria {{ ad.category }}</p>
+
+        </div>
+        <div style="clear: both"></div>
+        <p class="text">{{ ad.body }}</p>
+
+        <div class="review_form">
+            <form action="/ads/{{ ad.uuid }}" method="POST">
+                <h1>Dodaj opinię</h1>
+                <div><p>Ocena</p><input id="rate" max="5" min="1" name="rate" required type="number"/>
+                    <p class="hidden">--</p></div>
+                <div><p>Treść</p><textarea id="body" name="body"  maxlength="10000" required></textarea>
+                    <p class="hidden">--</p></div>
+                {{ form.recaptcha }}
+                <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+                <input type="submit" value="Wyślij"/>
+            </form>
+        </div>
+    </div>
+
+    <div id="reviews">
+        {% for review in reviews %}
+        <div class="review" id="review_{{ review.uuid }}">
+            <h3>Utworzony przez {{ review.author.full_name }}</h3>
+            <h3 id="evaluation_{{review.uuid}}">
+                <script>render_evaluation('evaluation_{{ review.uuid }}', '{{ review.rate }}');</script></h3>
+            <p>{{ review.body }}</p>
+            <p>{{ review.creation_date }}</p>
+
+            {% if review.user_id == current_user.get_id() %}
+            <form action="/reviews/{{ review.uuid }}/delete" method="post" style="float: left;">
+                <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+                <input class="link_like" type=submit value="Usuń">
+            </form>
+            {% endif %}
+            <button class="link_like" id="btn_{{ review.uuid }}_responses" onclick="get_responses('{{ review.uuid }}', '{{ review.responses_count }}', '{{ current_user.get_id() }}', '{{ csrf_token() }}');"
+                    style="float: left;">
+                Pokaż odpowiedzi <span id="{{ review.uuid }}_remain_responses">{{ review.responses_count }}</span>
+            </button>
+            <button class="link_like" id="btn_{{ review.uuid }}_hide_responses"
+                    onclick="hide_responses('{{ review.uuid }}', {{ review.responses_count }});"
+                    style="display: none; float: left;">
+                Ukryj odpowiedzi
+            </button>
+
+            {% if current_user.is_authenticated %}
+            <button class="link_like" id="btn_show_add_response_{{ review.uuid }}"
+                    onclick="show_add_response('{{ review.uuid }}');">Odpowiedz
+            </button>
+            {% endif %}
+            <p style="clear: both;"></p>
+            <div id="{{ review.uuid }}_responses"></div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="add_response_form" id="add_response_form" style="display: none;">
+        <form action="/ads/{{ ad.uuid }}/add_response" method="POST">
+            <input id="input_response_review_id" name="review_id" type="hidden"/>
+            <textarea id="response-body" name="body"  maxlength="10000" required></textarea>
+            <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+            {{ response_form.recaptcha }}
+            <input type="submit" value="Dodaj"/>
+        </form>
+    </div>
+    {% include 'pagination.html' %}
+    <script src="../static/js/responses.js"></script>
+
+</div>
+{% include "footer.html" %}
+</body>
+
+</html>

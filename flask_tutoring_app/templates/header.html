@@ -1,0 +1,64 @@
+
+<nav>
+    <h3><a href="/ads">Korepetycje.pl</a></h3>
+    <ul>
+        <li>
+            <b>
+                <a href="/ads" id="ads">
+                    Szukaj Ogłoszeń
+                </a>
+            </b>
+        </li>
+        {% if current_user.is_authenticated %}
+        <li><b>
+            <a href="/ads/new" id="add_ad">
+                Dodaj Ogłoszenie
+            </a>
+        </b></li>
+        {% endif %}
+        {% if current_user.is_authenticated %}
+        <li><b>
+            <a href="/logout" id="log_out">
+                Wyloguj
+            </a>
+        </b></li>
+        {% else %}
+        <li><b>
+            <a href="/login" id="log_in">
+                Zaloguj
+            </a>
+        </b></li>
+        <li><b>
+            <a href="/register" id="register">
+                Zarejestruj się
+            </a></b>
+        </li>
+        {% endif %}
+        <li><b>
+            {% if current_user.is_authenticated %}
+            <a href="/me">Twoje konto</a>
+            {% endif %}
+        </b></li>
+    </ul>
+    <span id="menu-button"><i class="demo-icon icon-menu nav-item"></i></span>
+</nav>
+
+<div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</div>
+<script crossorigin="anonymous" src="https://kit.fontawesome.com/23a43e2c5b.js"></script>
+<script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+<script>
+$("#menu-button").on("click", function() {
+    $("nav ul").slideToggle();
+});
+
+</script>

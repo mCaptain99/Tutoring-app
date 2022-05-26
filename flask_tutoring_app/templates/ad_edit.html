@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edytuj ogłoszenie</title>
+    <meta content="width=device-width, user-scalable=no,
+	initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <link href="../static/css/home.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+    <link href="../static/fonts/css/fontello.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+{% include "header.html" %}
+<div id="wrapper">
+    <div id="ad_edit_form">
+        <form action="/ads/{{ ad.uuid }}/edit" method="POST">
+            <h1>Edytuj ogłoszenie</h1>
+            <p>Tytuł</p><input id="title" max="35" min="6" name="title" required type="text" value="{{ ad.title }}"/>
+            <p class="hidden">--</p>
+            <p>Cena</p><input id="price" name="price" type="text" value="{{ ad.price }}"/>
+            <p class="hidden">--</p>
+            <p>Treść</p><textarea id="body" name="body" required>{{ ad.body }}</textarea>
+            <p class="hidden">--</p>
+            <div class="autocomplete" style="width:300px;">
+                <p>Miasto</p>
+                <input id="city" name="city" placeholder="Miasto" required type="text" value="{{ ad.city.name }}">
+                <p class="hidden" id="city_validation">Wybierz wartość z listy!</p>
+            </div>
+            <div class="autocomplete" style="width:300px;">
+                <p>Kategoria</p>
+                <input id="category" name="category" placeholder="Kategoria" required type="text"
+                       value="{{ ad.category }}"/>
+                <p class="hidden" id="category_validation">Wybierz wartość z listy!</p>
+            </div>
+            <div>
+                <p>Forma zajęć</p>
+                {{ form.online }} Online
+                {{ form.stationary }} Stationary
+            </div>
+            {{ form.recaptcha }}<p class="hidden">--</p>
+            <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+            <p class="hidden">--</p>
+            <input type="submit" value="Edytuj">
+
+        </form>
+    </div>
+    <script src="{{ url_for('static',filename='js/cities.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/autocomplete.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/categories.js') }}"></script>
+    <script>
+        autocomplete(document.getElementById("city"), cities, document.getElementById("city_validation"));
+        autocomplete(document.getElementById("category"), categories, document.getElementById("category_validation"));
+
+    </script>
+</div>
+{% include "footer.html" %}
+</body>
+</html>
